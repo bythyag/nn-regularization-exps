@@ -16,12 +16,13 @@ The experiment uses the CIFAR-10 dataset, a standard benchmark for image classif
 5.  **Elastic Net Regularization:** A combination of L1 and L2 regularization, aiming to leverage the benefits of both. Implemented using both `weight_decay` and manual L1 loss addition.
 6.  **Early Stopping:** A technique where training is halted when the model's performance on a validation dataset stops improving (or starts degrading) for a predefined number of epochs (patience). This prevents the model from training too far into the overfitting regime.
 
+
 ## Results
 
 ### Training History Plots
-![Plot Results](https://github.com/user-attachments/assets/e00ba250-383e-4bcb-819a-46bb35d2bca9)
+![Plot Results 1](https://github.com/user-attachments/assets/e00ba250-383e-4bcb-819a-46bb35d2bca9)
 
-
+![Plot Results 2](https://github.com/user-attachments/assets/908b2bff-fd58-49df-afb9-1125c3ee139a)
 **Expected Observations from Plots (General Case):**
 
 *   **Underfitting:** Both train and validation loss/accuracy curves plateau at suboptimal levels.
