@@ -10,6 +10,7 @@ The experiment uses the CIFAR-10 dataset, a standard benchmark for image classif
 
 1.  **Underfitting:** Training a model that is too simple or not trained long enough to capture the underlying patterns in the data.
 2.  **Overfitting:** Training a model that learns the training data too well, including noise and specific patterns, leading to poor performance on unseen data (validation/test sets). Identified by diverging training and validation performance metrics (e.g., loss increasing on validation set while decreasing on training set).
+
 3.  **L2 Regularization (Weight Decay):** Adds a penalty proportional to the square of the magnitude of model weights to the loss function. Encourages smaller weights, leading to simpler models less sensitive to input variations. Implemented via `optim.AdamW`'s `weight_decay`.
 4.  **L1 Regularization (Lasso):** Adds a penalty proportional to the absolute value of the magnitude of model weights. Encourages sparsity (some weights become exactly zero), potentially performing feature selection. Implemented manually by adding the L1 norm to the loss.
 5.  **Elastic Net Regularization:** A combination of L1 and L2 regularization, aiming to leverage the benefits of both. Implemented using both `weight_decay` and manual L1 loss addition.
@@ -18,6 +19,8 @@ The experiment uses the CIFAR-10 dataset, a standard benchmark for image classif
 ## Results
 
 ### Training History Plots
+![Plot Results](https://github.com/user-attachments/assets/e00ba250-383e-4bcb-819a-46bb35d2bca9)
+
 
 **Expected Observations from Plots (General Case):**
 
