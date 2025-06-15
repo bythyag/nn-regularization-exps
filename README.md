@@ -13,18 +13,6 @@
 3.  **l2 regularization (weight decay):** adds a penalty proportional to the square of the magnitude of model weights to the loss function. encourages smaller weights, leading to simpler models less sensitive to input variations. implemented via `optim.adamw`'s `weight_decay`.
 4.  **l1 regularization (lasso):** adds a penalty proportional to the absolute value of the magnitude of model weights. encourages sparsity (some weights become exactly zero), potentially performing feature selection. implemented manually by adding the l1 norm to the loss.
 5.  **elastic net regularization:** a combination of l1 and l2 regularization, aiming to leverage the benefits of both. implemented using both `weight_decay` and manual l1 loss addition.
-mathematically it is represented as: 
-\[
-\underset{\beta}{\min} \ \frac{1}{2n} \| y - X\beta \|_2^2 + \lambda \left( \alpha \|\beta\|_1 + \frac{1}{2}(1 - \alpha) \|\beta\|_2^2 \right)
-\]
-where:
-- \( X \in \mathbb{R}^{n \times p} \) is the input feature matrix,
-- \( y \in \mathbb{R}^n \) is the target vector,
-- \( \beta \in \mathbb{R}^p \) is the coefficient vector,
-- \( \lambda \geq 0 \) is the regularization parameter,
-- \( \alpha \in [0,1] \) controls the mix of l1 and l2 penalties:
-  - \( \alpha = 1 \): pure lasso (L1),
-  - \( \alpha = 0 \): pure ridge (L2).
 6.  **early stopping:** a technique where training is halted when the model's performance on a validation dataset stops improving (or starts degrading) for a predefined number of epochs (patience). this prevents the model from training too far into the overfitting regime.
 
 
