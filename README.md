@@ -1,123 +1,52 @@
-# Exploring Overfitting, Underfitting, and Regularization with PyTorch CNN on CIFAR-10
+## exploring overfitting, underfitting, and regularization with pytorch cnn on cifar-10
 
-## Overview
+### overview
 
-This project demonstrates the concepts of underfitting, overfitting, and the impact of various regularization techniques (L1, L2, Elastic Net) and Early Stopping on a Convolutional Neural Network (CNN) trained using PyTorch. The goal is to visually and quantitatively compare how these techniques help mitigate overfitting and improve model generalization.
+1. this project explores the impact of underfitting, overfitting, and various regularization techniques (l1, l2, elastic net) and early stopping on a convolutional neural network (cnn) (cifar-10) while training from scratch. 
+2. the goal of the project is to visually and quantitatively compare how these techniques help mitigate overfitting and improve model generalization.
+3. the experiment uses the cifar-10 dataset, a standard benchmark for image classification.
 
-The experiment uses the CIFAR-10 dataset, a standard benchmark for image classification.
+### key concepts explored
 
-## Key Concepts Explored
+1.  **underfitting:** training a model that is too simple or not trained long enough to capture the underlying patterns in the data.
+2.  **overfitting:** training a model that learns the training data too well, including noise and specific patterns, leading to poor performance on unseen data (validation/test sets). identified by diverging training and validation performance metrics (e.g., loss increasing on validation set while decreasing on training set).
+3.  **l2 regularization (weight decay):** adds a penalty proportional to the square of the magnitude of model weights to the loss function. encourages smaller weights, leading to simpler models less sensitive to input variations. implemented via `optim.adamw`'s `weight_decay`.
+4.  **l1 regularization (lasso):** adds a penalty proportional to the absolute value of the magnitude of model weights. encourages sparsity (some weights become exactly zero), potentially performing feature selection. implemented manually by adding the l1 norm to the loss.
+5.  **elastic net regularization:** a combination of l1 and l2 regularization, aiming to leverage the benefits of both. implemented using both `weight_decay` and manual l1 loss addition.
+mathematically it is represented as: 
+\[
+\underset{\beta}{\min} \ \frac{1}{2n} \| y - X\beta \|_2^2 + \lambda \left( \alpha \|\beta\|_1 + \frac{1}{2}(1 - \alpha) \|\beta\|_2^2 \right)
+\]
+where:
+- \( X \in \mathbb{R}^{n \times p} \) is the input feature matrix,
+- \( y \in \mathbb{R}^n \) is the target vector,
+- \( \beta \in \mathbb{R}^p \) is the coefficient vector,
+- \( \lambda \geq 0 \) is the regularization parameter,
+- \( \alpha \in [0,1] \) controls the mix of l1 and l2 penalties:
+  - \( \alpha = 1 \): pure lasso (L1),
+  - \( \alpha = 0 \): pure ridge (L2).
+6.  **early stopping:** a technique where training is halted when the model's performance on a validation dataset stops improving (or starts degrading) for a predefined number of epochs (patience). this prevents the model from training too far into the overfitting regime.
 
-1.  **Underfitting:** Training a model that is too simple or not trained long enough to capture the underlying patterns in the data.
-2.  **Overfitting:** Training a model that learns the training data too well, including noise and specific patterns, leading to poor performance on unseen data (validation/test sets). Identified by diverging training and validation performance metrics (e.g., loss increasing on validation set while decreasing on training set).
 
-3.  **L2 Regularization (Weight Decay):** Adds a penalty proportional to the square of the magnitude of model weights to the loss function. Encourages smaller weights, leading to simpler models less sensitive to input variations. Implemented via `optim.AdamW`'s `weight_decay`.
-4.  **L1 Regularization (Lasso):** Adds a penalty proportional to the absolute value of the magnitude of model weights. Encourages sparsity (some weights become exactly zero), potentially performing feature selection. Implemented manually by adding the L1 norm to the loss.
-5.  **Elastic Net Regularization:** A combination of L1 and L2 regularization, aiming to leverage the benefits of both. Implemented using both `weight_decay` and manual L1 loss addition.
-6.  **Early Stopping:** A technique where training is halted when the model's performance on a validation dataset stops improving (or starts degrading) for a predefined number of epochs (patience). This prevents the model from training too far into the overfitting regime.
+### results
 
+### training history plots
+![plot results 1](https://github.com/user-attachments/assets/e00ba250-383e-4bcb-819a-46bb35d2bca9)
 
-## Results
+### final evaluation on test set
 
-### Training History Plots
-![Plot Results 1](https://github.com/user-attachments/assets/e00ba250-383e-4bcb-819a-46bb35d2bca9)
+the models were evaluated on the unseen cifar-10 test set after training completion (or early stopping).
 
-![Plot Results 2](https://github.com/user-attachments/assets/908b2bff-fd58-49df-afb9-1125c3ee139a)
-**Expected Observations from Plots (General Case):**
-
-*   **Underfitting:** Both train and validation loss/accuracy curves plateau at suboptimal levels.
-*   **Baseline:** Train loss decreases, train accuracy increases significantly. Validation loss decreases initially then *increases*, while validation accuracy plateaus or drops. A clear gap forms between train and validation curves.
-*   **L2/L1/Elastic Net:** The gap between train and validation curves should be smaller compared to the baseline. Validation loss might not increase as sharply, and validation accuracy might peak higher or stay stable longer.
-*   **Early Stopping:** Training halts significantly before the maximum epochs, ideally near the point where validation loss was minimal.
-
-### Final Evaluation on Test Set
-
-The models were evaluated on the unseen CIFAR-10 test set after training completion (or early stopping).
-
-| Model             |   Test Loss |   Test Accuracy |   Stopped Epoch |
+| model             |   test loss |   test accuracy |   stopped epoch |
 | :---------------- | ----------: | --------------: | --------------: |
-| Underfitting      |    0.711778 |          0.7546 |              60 |
-| Baseline          |    0.444848 |          **0.8875** |              60 |
-| L2 Regularization |    0.468008 |          0.8736 |              60 |
-| L1 Regularization |    **0.390260** |          0.8786 |              60 |
-| Elastic Net       |    0.421788 |          0.8814 |              60 |
-| Early Stopping    |    0.427962 |          0.8643 |              **32** |
+| underfitting      |    0.711778 |          0.7546 |              60 |
+| baseline          |    0.444848 |          **0.8875** |              60 |
+| l2 regularization |    0.468008 |          0.8736 |              60 |
+| l1 regularization |    **0.390260** |          0.8786 |              60 |
+| elastic net       |    0.421788 |          0.8814 |              60 |
+| early stopping    |    0.427962 |          0.8643 |              **32** |
 
-*(Results based on the specific run provided)*
 
-## Analysis and Interpretation
+### llm usage
 
-Based on the plots (visualized from the script output) and the final evaluation table:
-
-1.  **Underfitting Confirmed:** The `Underfitting` model achieved significantly lower test accuracy (75.46%) and higher test loss compared to the more complex models, clearly demonstrating its inability to fully learn the dataset patterns.
-2.  **Overfitting Behavior (Baseline):** While the baseline model achieved the *highest test accuracy* (88.75%) in this specific run when stopped at epoch 60, the training plots (generated by the script) would likely show its validation loss starting to increase earlier, indicating overfitting was occurring during training. Achieving the best test score at the final epoch might be coincidental for this run, or suggest that the overfitting observed on the validation set didn't severely impact generalization to the *test* set until later epochs, or that the chosen validation split wasn't perfectly representative.
-3.  **Regularization Effects:**
-    *   **L2, L1, and Elastic Net** all produced models with high test accuracy, slightly below the baseline in this instance but significantly better than the underfitting model. They likely reduced the gap between training and validation performance (visible in plots), showing they controlled overfitting during training.
-    *   **L1 Regularization** achieved the lowest test loss, suggesting it might have found a sparser or slightly better-generalizing solution in terms of loss minimization, even if accuracy was marginally lower than the baseline.
-    *   The fact that regularized models didn't surpass the baseline test accuracy highlights that the *amount* of regularization (lambda values for L1, weight decay for L2) is a critical hyperparameter. The chosen values might have been slightly too strong or not optimal for this specific architecture/data/epoch combination.
-4.  **Early Stopping Effectiveness:**
-    *   Early Stopping successfully identified a point (Epoch 32) where validation performance stopped improving and halted training, saving significant compute time (almost half the epochs).
-    *   Its final test accuracy (86.43%) is lower than the models trained for 60 epochs, but it represents the model state optimized for the *validation set*. This demonstrates its core function: preventing the model from continuing to train while validation performance degrades. The discrepancy between the best validation epoch and the best test performance epoch (seen in the Baseline at epoch 60) can occur due to differences between the validation and test set distributions.
-
-## Setup
-
-*   **Dataset:** CIFAR-10 (32x32 color images, 10 classes).
-    *   Downloaded automatically via `torchvision.datasets.CIFAR10`.
-    *   Training data split into 90% training / 10% validation.
-    *   Standard normalization applied.
-    *   Basic data augmentation (RandomHorizontalFlip, RandomCrop) applied to the training subset.
-*   **Model:**
-    *   `OverfittingCNN`: A custom moderately deep CNN designed to be capable of overfitting CIFAR-10 within a reasonable number of epochs. It includes multiple convolutional layers, BatchNorm, ReLU activations, Max Pooling, and fully connected layers.
-    *   `UnderfittingCNN`: A much simpler CNN with fewer layers and filters, used to demonstrate underfitting.
-*   **Environment:**
-    *   Python 3.x
-    *   PyTorch (`torch`, `torchvision`)
-    *   NumPy
-    *   Matplotlib
-    *   Pandas (for results table)
-    *   Scikit-learn (for evaluation metrics - `accuracy_score`)
-    *   Designed to run on a GPU (e.g., Google Colab T4 free tier).
-
-## Experiments Conducted
-
-The following training scenarios were executed, each using the Adam/AdamW optimizer, Cross-Entropy Loss, and training for up to 60 epochs (unless stopped early):
-
-1.  **Underfitting:** Trained the `UnderfittingCNN` model.
-2.  **Baseline:** Trained the `OverfittingCNN` model with **no regularization**.
-3.  **L2 Regularization:** Trained the `OverfittingCNN` model using AdamW with `weight_decay=1e-4`.
-4.  **L1 Regularization:** Trained the `OverfittingCNN` model using Adam, manually adding an L1 penalty with `lambda=1e-5` to the loss.
-5.  **Elastic Net:** Trained the `OverfittingCNN` model using AdamW with `weight_decay=1e-4` **and** manually adding an L1 penalty with `lambda=1e-5`.
-6.  **Early Stopping:** Trained the `OverfittingCNN` model with **no L1/L2 regularization**, but enabled early stopping with `patience=7` and `min_delta=0.001` based on validation loss.
-
-## How to Run
-
-1.  **Clone the repository:**
-    ```bash
-    git clone <repository-url>
-    cd <repository-directory>
-    ```
-2.  **Set up environment:** (Recommended: use `conda` or `venv`)
-    ```bash
-    python -m venv venv
-    source venv/bin/activate # On Windows use `venv\Scripts\activate`
-    ```
-3.  **Install dependencies:**
-    ```bash
-    pip install torch torchvision numpy matplotlib pandas scikit-learn
-    # Ensure you install the correct PyTorch version for your CUDA setup if using local GPU
-    ```
-4.  **Run the script:**
-    ```bash
-    python your_script_name.py # Replace with the actual script filename
-    ```
-    *Note: Running on a GPU is highly recommended due to model complexity and dataset size.*
-
-## Conclusion
-
-This experiment successfully demonstrated:
-*   The clear difference in performance between underfitting and appropriately complex models.
-*   The characteristic divergence of training/validation metrics during overfitting (visualized in plots).
-*   How L1, L2, and Elastic Net regularization act to constrain model complexity, generally reducing the train-validation performance gap.
-*   How Early Stopping prevents training beyond the point of optimal validation performance, saving computation and providing a model that generalizes well *to the validation set*.
-
-While the baseline achieved the highest test accuracy *in this specific run*, the regularization techniques and early stopping clearly showed their mechanisms for controlling model complexity and preventing severe overfitting during the training process. Achieving optimal test performance often requires careful tuning of regularization hyperparameters and potentially evaluating model checkpoints based on validation performance rather than just training to a fixed epoch count.
+this is an exporation/educational project whose codes were generated using ai tools. used generative ai tools to write cifar model on pytorch and implement regularization methods to study its affects on result accuracy. 
