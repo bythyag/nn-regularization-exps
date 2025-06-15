@@ -1,12 +1,12 @@
 ## exploring overfitting, underfitting, and regularization with pytorch cnn on cifar-10
 
-### overview
+## overview
 
 1. this project explores the impact of underfitting, overfitting, and various regularization techniques (l1, l2, elastic net) and early stopping on a convolutional neural network (cnn) (cifar-10) while training from scratch. 
 2. the goal of the project is to visually and quantitatively compare how these techniques help mitigate overfitting and improve model generalization.
 3. the experiment uses the cifar-10 dataset, a standard benchmark for image classification.
 
-### key concepts explored
+## key concepts explored
 
 1.  **underfitting:** training a model that is too simple or not trained long enough to capture the underlying patterns in the data.
 2.  **overfitting:** training a model that learns the training data too well, including noise and specific patterns, leading to poor performance on unseen data (validation/test sets). identified by diverging training and validation performance metrics (e.g., loss increasing on validation set while decreasing on training set).
@@ -16,7 +16,7 @@
 6.  **early stopping:** a technique where training is halted when the model's performance on a validation dataset stops improving (or starts degrading) for a predefined number of epochs (patience). this prevents the model from training too far into the overfitting regime.
 
 
-### results
+## results
 
 ### training history plots
 ![plot results 1](https://github.com/user-attachments/assets/e00ba250-383e-4bcb-819a-46bb35d2bca9)
@@ -35,6 +35,6 @@ the models were evaluated on the unseen cifar-10 test set after training complet
 | early stopping    |    0.427962 |          0.8643 |              **32** |
 
 
-### llm usage
+## llm usage
 
 this is an exporation/educational project whose codes were generated using ai tools. used generative ai tools to write cifar model on pytorch and implement regularization methods to study its affects on result accuracy. 
